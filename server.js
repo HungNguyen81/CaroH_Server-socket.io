@@ -71,8 +71,7 @@ io.on('connection', (socket)=>{
     console.log("Mot ket noi duoc mo! Socket ID: " + socket.id);
 
     // on createRoom msg
-    socket.on('createRoom', (roomid, username, avatarid)=>{        
-        rid = roomid
+    socket.on('createRoom', (roomid, username, avatarid)=>{                
         RoomModel.findOne({
             roomid: roomid
         })
@@ -93,11 +92,12 @@ io.on('connection', (socket)=>{
                     numberofplayers: 1
                 })
             }
+            rid = roomid
         })
     })
 
     // on joinRoom msg
-    socket.on("joinRoom", (roomid, username, avatarid) => {
+    socket.on("joinRoom", (roomid, username, avatarid) => {        
         console.log("new player: " + username + "\n|__join in room: " + roomid)
         MongoClient.connect(url, function(err, db) {
             if (err) throw err;
@@ -105,12 +105,10 @@ io.on('connection', (socket)=>{
             let myquery = { roomid: roomid };
             dbo.collection('rooms_onlines').findOne(myquery).then(res => {
                 console.log(roomid + '|' + username + '|' + avatarid)                                
+                if(res != null)
                 if(res.numberofplayers === 2){
                     socket.emit('confirmJoin', 0) // 0 : failed join
                 } else {
-                    // dbo.collection("rooms_onlines").updateOne(myquery, {
-                    //     $set: {numberofplayers: 2}                
-                    // });
                     if(res.scdplayer === undefined) {
                         console.log("second player undefined")
                         dbo.collection('rooms_onlines').updateOne(myquery, {
@@ -134,6 +132,7 @@ io.on('connection', (socket)=>{
                             $set : {numberofplayers : 2}
                         })
                     }
+                    rid = roomid
                     socket.emit('confirmJoin', 1) // 1 : join successfully
                 }
             })                        
