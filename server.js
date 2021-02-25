@@ -71,7 +71,8 @@ io.on('connection', (socket)=>{
     console.log("Mot ket noi duoc mo! Socket ID: " + socket.id);
 
     // on createRoom msg
-    socket.on('createRoom', (roomid, username, avatarid)=>{                
+    socket.on('createRoom', (roomid, username, avatarid)=>{   
+        rid = roomid             
         RoomModel.findOne({
             roomid: roomid
         })
@@ -91,8 +92,7 @@ io.on('connection', (socket)=>{
                     scdplayer: null,
                     numberofplayers: 1
                 })
-            }
-            rid = roomid
+            }            
         })
     })
 
@@ -107,21 +107,31 @@ io.on('connection', (socket)=>{
                 console.log(roomid + '|' + username + '|' + avatarid)                                
                 if(res != null)
                 if(res.numberofplayers === 2){
-                    socket.emit('confirmJoin', 0) // 0 : failed join
+                    // socket.emit('confirmJoin', 0) // 0 : failed join
                 } else {
-                    if(res.scdplayer === undefined) {
+                    var other_socketid = ''
+                    var other_avatarid = ''
+                    var other_username = ''
+                    if(res.scdplayer === undefined || res.scdplayer === null) {
+                        other_socketid = res.fstplayer.socketid
+                        other_avatarid = res.fstplayer.avatar
+                        other_username = res.fstplayer.username
                         console.log("second player undefined")
                         dbo.collection('rooms_onlines').updateOne(myquery, {
                             $set: {scdplayer : {
                                 username : username,
-                                avatarid : avatarid,
+                                avatar : avatarid,
                                 socketid : socket.id
                             }}
                         })
                         dbo.collection('rooms_onlines').updateOne(myquery, {                            
                             $set : {numberofplayers : 2}
                         })
-                    } else if(res.fstplayer === undefined){
+                    } else if(res.fstplayer === undefined || res.fstplayer === null){
+                        other_socketid = res.scdplayer.socketid
+                        other_avatarid = res.scdplayer.avatarid
+                        other_username = res.scdplayer.username
+                        
                         console.log("first player undefined")
                         dbo.collection('rooms_onlines').updateOne(myquery, {
                             $set: {fstplayer : {
@@ -133,9 +143,12 @@ io.on('connection', (socket)=>{
                         })
                     }
                     rid = roomid
-                    socket.emit('confirmJoin', 1) // 1 : join successfully
+                    console.log("emit roomFull")
+                    io.to(other_socketid).emit("roomFull", username, avatarid)
+                    io.to(socket.id).emit("roomFull", other_username, other_avatarid)
+                    console.log(other_username, other_avatarid)
                 }
-            })                        
+            }).catch(e => {if(e) throw e})
           });
     })
 
@@ -155,6 +168,15 @@ io.on('connection', (socket)=>{
                     dbo.collection("rooms_onlines").updateOne(myquery, {
                         $set: {numberofplayers: 1}
                     });
+                    if(socket.id === res.fstplayer.socketid){
+                        dbo.collection("rooms_onlines").updateOne(myquery,{
+                            $set: {fstplayer: undefined}
+                        })
+                    } else if(socket.id === res.scdplayer.socketid){
+                        dbo.collection("rooms_onlines").updateOne(myquery,{
+                            $set: {scdplayer: undefined}
+                        })
+                    }
                 }
             }).catch(e => {})
           });

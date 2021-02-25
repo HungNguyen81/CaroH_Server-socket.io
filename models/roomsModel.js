@@ -11,7 +11,7 @@ const roomSchema = new Schema({
     roomid: String,
     fstplayer: {
         username: String,
-        avatar: String,
+        avatar: Number,
         socketid: String
     },
     scdplayer: {
