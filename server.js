@@ -6,8 +6,9 @@ const bodyParser= require('body-parser');
 const AccModel  = require('./models/accModel');
 const RoomModel = require('./models/roomsModel');
 var MongoClient = require('mongodb').MongoClient;
-const { emit } = require('./models/accModel');
+
 var url = "mongodb://localhost:27017/";
+var rid = '';
 
 app.use(express.static('public'));
 // app.set('view engine', 'ejs');
@@ -66,7 +67,7 @@ app.post('/signup', (req, res) => {
         res.status(400).end('Wrong Username or Password')
     })
 })
-var rid = ''
+
 io.on('connection', (socket)=>{    
     console.log("Mot ket noi duoc mo! Socket ID: " + socket.id);
 
@@ -174,10 +175,12 @@ io.on('connection', (socket)=>{
                         dbo.collection("rooms_onlines").updateOne(myquery,{
                             $set: {fstplayer: undefined}
                         })
+                        io.to(res.scdplayer.socketid).emit("memberLeft")
                     } else if(socket.id === res.scdplayer.socketid){
                         dbo.collection("rooms_onlines").updateOne(myquery,{
                             $set: {scdplayer: undefined}
                         })
+                        io.to(res.fstplayer.socketid).emit("memberLeft")
                     }
                 }
             }).catch(e => {})
