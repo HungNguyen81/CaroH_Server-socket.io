@@ -129,16 +129,18 @@ io.on('connection', (socket)=>{
                         })
                     } else if(res.fstplayer === undefined || res.fstplayer === null){
                         other_socketid = res.scdplayer.socketid
-                        other_avatarid = res.scdplayer.avatarid
+                        other_avatarid = res.scdplayer.avatar
                         other_username = res.scdplayer.username
                         
                         console.log("first player undefined")
                         dbo.collection('rooms_onlines').updateOne(myquery, {
                             $set: {fstplayer : {
                                 username : username,
-                                avatarid : avatarid,
+                                avatar : avatarid,
                                 socketid : socket.id
-                            }},
+                            }}
+                        })
+                        dbo.collection('rooms_onlines').updateOne(myquery, {                            
                             $set : {numberofplayers : 2}
                         })
                     }
@@ -183,7 +185,7 @@ io.on('connection', (socket)=>{
     })
 
     // on sendMsg
-    socket.on("sendMsg", (roomid, usernumber, message)=>{
+    socket.on("sendMsg", (roomid, username, message)=>{
         MongoClient.connect(url, (err, db) => {
             if (err) throw err;
 
@@ -192,13 +194,10 @@ io.on('connection', (socket)=>{
             dbo.collection('rooms_onlines').findOne(myquery).then(res => {
                 console.log("receive message")
                 var socketid = ''   // receiver's socket id
-                var username = ''   // sender's username
-                if(usernumber === 1){
-                    socketid = res.scdplayer.socketid;
-                    username = res.fstplayer.username;
-                } else {
-                    socketid = res.fstplayer.socketid;
-                    username = res.scdplayer.username;
+                if(username === res.fstplayer.username){
+                    socketid = res.scdplayer.socketid;                    
+                } else if(username === res.scdplayer.username) {
+                    socketid = res.fstplayer.socketid;                
                 }
                 console.log(socketid)
                 io.to(socketid).emit("newMsg", username, message)
