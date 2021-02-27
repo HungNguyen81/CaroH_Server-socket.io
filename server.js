@@ -10,9 +10,10 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 var rid = '';
 
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 // app.set('view engine', 'ejs');
-server.listen(process.env.PORT || 3000, ()=>{ console.log('start server') });
+var PORT = process.env.PORT || 3000;
+server.listen(PORT, ()=>{ console.log(`start server at port: ${PORT}`)});
 
 app.use(bodyParser.urlencoded({ extened: true }));
 app.use(bodyParser.json());

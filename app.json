@@ -1,0 +1,7 @@
+{
+  "name": "Start on Heroku: Node.js",
+  "description": "A barebones Node.js app using Express 4",
+  "repository": "https://github.com/heroku/caroh-game",
+  "keywords": ["node", "express", "heroku", "socket.io"],
+  "image": "heroku/nodejs"
+}
