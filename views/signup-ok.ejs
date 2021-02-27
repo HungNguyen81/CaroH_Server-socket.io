@@ -1,0 +1,25 @@
+<html>
+    <head><%- include('head') -%>
+        <style>
+            .container{
+                background-color: #6db5ca;
+            }
+            button{
+                background-color: white;
+                color: blue;
+            }            
+            @media screen and (max-width: 900px) {
+                html{
+                    font-size: 150%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Sign up successfully.</h1>
+            <h2>Now you can login.</h2>
+            <button onclick="window.location='/';">Login</button>
+        </div>        
+    </body>
+</html>

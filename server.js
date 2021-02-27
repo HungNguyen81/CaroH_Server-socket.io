@@ -21,8 +21,7 @@ app.use(bodyParser.json());
 
 app.post('/login', (req, res) => {
     let user = req.body.username;
-    let pwd = req.body.password;
-    console.log(req);
+    let pwd = req.body.password;    
     if(user == '' || pwd == '') return;
     AccModel.findOne({
         username: user,
@@ -31,12 +30,12 @@ app.post('/login', (req, res) => {
     .then(data=>{
         console.log('|___' + user + ' logged in')
         if(data){            
-            if(req.body.isWebapp === '1'){
-                res.render('home-page', {
-                    username : user,
-                    avatarid : data.avt
-                })
-            } else 
+            // if(req.body.isWebapp === '1'){                
+            //     res.render('home-page', {
+            //         username : user,
+            //         avatarid : data.avt
+            //     })                
+            // } else 
                 res.status(200).end('Login OK,' + data.avt + ',' + data.email)
         } else {
             res.status(400).end('Wrong Username or Password')
@@ -221,9 +220,71 @@ io.on('connection', (socket)=>{
 
 // Request on load page
 app.get('/', (req, res)=>{
-    res.render('index');
+    res.render('login');
 });
 
-app.get('/home', (req, res) => {
-    res.render('home-page');
+app.post('/home', (req, res) => {
+    let user = req.body.username;
+    let pwd = req.body.password;    
+    if(user == '' || pwd == '') return;
+    AccModel.findOne({
+        username: user,
+        password: pwd
+    })
+    .then(data=>{
+        console.log('|___' + user + ' logged in')
+        if(data){              
+            res.render('home-page', {
+                username : user,
+                avatarid : data.avt
+            })                            
+        } else {
+            res.status(400).end('Wrong Username or Password')
+        }        
+    })
+    .catch(err=>{
+        res.status(400).end('Error Occurred')
+    })
+})
+
+app.get('/signup-web', (req, res) => {
+    res.render('signup');
+})
+app.post('/signup-web', (req, res) => {
+    let user = req.body.username
+    let pwd = req.body.password
+    let cpwd = req.body.cpassword
+    let email = req.body.email
+    let avt = req.body.avt
+
+    if(pwd != cpwd){
+        alert("wrong confirm password")
+    }
+
+    AccModel.findOne({
+        username: user        
+    })
+    .then(data=>{
+        if(data){
+            console.log("Username is used")
+            res.end('400code:username in used')
+        } else {
+            console.log('|___a new signup: ' + user + ", avt: " + avt)
+            return AccModel.create({
+                username: user,
+                password: pwd,
+                email: email,
+                avt: avt
+            })
+        }        
+    })
+    .then(data =>{                
+        res.render('signup-ok')
+    })
+    .catch(err => {
+        res.status(400).end('Somthings wrong')        
+    })
+})
+app.post('/game-lobby', (req, res) => {
+
 })
