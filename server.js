@@ -95,7 +95,7 @@ io.on('connection', (socket)=>{
                     numberofplayers: 1
                 })
             }            
-        }).catch(e => {})
+        })
     })
 
     // on joinRoom msg
@@ -125,10 +125,10 @@ io.on('connection', (socket)=>{
                                 avatar : avatarid,
                                 socketid : socket.id
                             }}
-                        }).catch(e => {})
+                        })
                         dbo.collection('rooms_onlines').updateOne(myquery, {                            
                             $set : {numberofplayers : 2}
-                        }).catch(e => {})
+                        })
                     } else if(res.fstplayer === undefined || res.fstplayer === null){
                         other_socketid = res.scdplayer.socketid
                         other_avatarid = res.scdplayer.avatar
@@ -141,10 +141,10 @@ io.on('connection', (socket)=>{
                                 avatar : avatarid,
                                 socketid : socket.id
                             }}
-                        }).catch(e => {})
+                        })
                         dbo.collection('rooms_onlines').updateOne(myquery, {                            
                             $set : {numberofplayers : 2}
-                        }).catch(e => {})
+                        })
                     }
                     rid = roomid
                     console.log("emit roomFull")
@@ -153,7 +153,7 @@ io.on('connection', (socket)=>{
                     console.log(other_username, other_avatarid)
                 }
             }).catch(e => {if(e) throw e})
-          }).catch(e => {});
+          });
     })
 
     // on disconnect socket
@@ -171,21 +171,21 @@ io.on('connection', (socket)=>{
                 } else {
                     dbo.collection("rooms_onlines").updateOne(myquery, {
                         $set: {numberofplayers: 1}
-                    }).catch(e => {});
+                    });
                     if(socket.id === res.fstplayer.socketid){
                         dbo.collection("rooms_onlines").updateOne(myquery,{
                             $set: {fstplayer: undefined}
-                        }).catch(e => {})
+                        })
                         io.to(res.scdplayer.socketid).emit("memberLeft")
                     } else if(socket.id === res.scdplayer.socketid){
                         dbo.collection("rooms_onlines").updateOne(myquery,{
                             $set: {scdplayer: undefined}
-                        }).catch(e => {})
+                        })
                         io.to(res.fstplayer.socketid).emit("memberLeft")
                     }
                 }
             }).catch(e => {})
-          }).catch(e => {});
+          });
     })
 
     // on sendMsg
