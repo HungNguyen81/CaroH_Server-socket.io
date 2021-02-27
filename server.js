@@ -10,9 +10,10 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://admin-caroh:hungnguyen81@gamedb.r21s8.mongodb.net/";//"mongodb://localhost:27017/";
 var rid = '';
 
-app.use(express.static(__dirname + '/public'));
-// app.set('view engine', 'ejs');
-var PORT = process.env.PORT || 3000;
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+app.set('views', './views');
+var PORT = process.env.PORT || 8080;
 server.listen(PORT, ()=>{ console.log(`start server at port: ${PORT}`)});
 
 app.use(bodyParser.urlencoded({ extened: true }));
@@ -21,6 +22,8 @@ app.use(bodyParser.json());
 app.post('/login', (req, res) => {
     let user = req.body.username;
     let pwd = req.body.password;
+    console.log(req);
+    if(user == '' || pwd == '') return;
     AccModel.findOne({
         username: user,
         password: pwd
@@ -28,7 +31,13 @@ app.post('/login', (req, res) => {
     .then(data=>{
         console.log('|___' + user + ' logged in')
         if(data){            
-            res.status(200).end('Login OK,' + data.avt + ',' + data.email)
+            if(req.body.isWebapp === '1'){
+                res.render('home-page', {
+                    username : user,
+                    avatarid : data.avt
+                })
+            } else 
+                res.status(200).end('Login OK,' + data.avt + ',' + data.email)
         } else {
             res.status(400).end('Wrong Username or Password')
         }        
@@ -212,5 +221,9 @@ io.on('connection', (socket)=>{
 
 // Request on load page
 app.get('/', (req, res)=>{
-    res.end(`HI WORLD IM RUNNING ON PORT ${port}`)
+    res.render('index');
+});
+
+app.get('/home', (req, res) => {
+    res.render('home-page');
 })

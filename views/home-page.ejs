@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <%- include('head') -%>
+        <% var username;%>
+        <% var avatarid;%>
+        <% var src = '<img width="50px" src ="avatar/' + ((avatarid < 10)? '0' + avatarid:avatarid) + '.png" alt="avt">' %> 
+    </head>
+    <body>
+        <div class="container">
+            <h1>hello <%= username%></h1>
+            <h2>avt: <%= avatarid%></h2>            
+            <%-src%>
+        </div>
+    </body>
+</html>

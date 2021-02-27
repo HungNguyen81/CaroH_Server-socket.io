@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>CaroH - Online caro game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/login-style.css">
+    
+    <%- include('style') -%>
+    
+</head>
+<body>
+    <form action="login" method="post">
+        <h1>GAME LOGIN</h1>
+        <div class="container">
+            <label for="username"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="username" required>
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" required>
+            <input type="text" name="isWebapp" value="1" style="visibility: hidden;" required>
+            <button type="submit">Login</button>            
+        </div>
+    </form>
+</body>
+</html>
