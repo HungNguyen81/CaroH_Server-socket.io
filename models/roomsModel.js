@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/gamedb', 
+mongoose.connect('mongodb+srv://admin-caroh:hungnguyen81@gamedb.r21s8.mongodb.net/gamedb', 
 {
     useNewUrlParser: true, 
     useUnifiedTopology: true
@@ -21,9 +21,9 @@ const roomSchema = new Schema({
     },
     numberofplayers: Number
 }, {
-    collation: 'rooms_online'
+    collation: 'rooms_onlines'
 });
 
-const RoomModel = mongoose.model('rooms_online', roomSchema)
+const RoomModel = mongoose.model('rooms_onlines', roomSchema)
 
 module.exports = RoomModel

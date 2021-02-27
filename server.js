@@ -7,7 +7,7 @@ const AccModel  = require('./models/accModel');
 const RoomModel = require('./models/roomsModel');
 var MongoClient = require('mongodb').MongoClient;
 
-var url = "mongodb://localhost:27017/";
+var url = "mongodb+srv://admin-caroh:hungnguyen81@gamedb.r21s8.mongodb.net/";//"mongodb://localhost:27017/";
 var rid = '';
 
 app.use(express.static(__dirname + '/public'));
@@ -212,5 +212,5 @@ io.on('connection', (socket)=>{
 
 // Request on load page
 app.get('/', (req, res)=>{
-    res.end("HI WORLD")
+    res.end(`HI WORLD IM RUNNING ON PORT ${port}`)
 })

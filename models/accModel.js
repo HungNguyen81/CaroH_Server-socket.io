@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/gamedb', 
+mongoose.connect('mongodb+srv://admin-caroh:hungnguyen81@gamedb.r21s8.mongodb.net/gamedb', 
 {
     useNewUrlParser: true, 
     useUnifiedTopology: true
@@ -13,7 +13,7 @@ const AccSchema = new Schema({
     email: String,
     avt: String
 }, {
-    collation: 'player_acounts'
+    collation: 'player_accounts'
 });
 
 const AccModel = mongoose.model('player_accounts', AccSchema)
