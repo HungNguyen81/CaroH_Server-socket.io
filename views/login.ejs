@@ -7,7 +7,7 @@
     
 </head>
 <body>
-    <img src="avatar/50.png" alt="CAROH" class="game_img" width="200">
+    <img src="avatar/50.png" alt="CAROH" class="game_img">
     <div class="form_login">
         <form action="home" method="post">
             <h1 class="game">CAROH</h1>
@@ -19,17 +19,13 @@
                 <input type="password" placeholder="Enter Password" name="password" required>    
                 <br>        
                 <button type="submit">Login</button>            
-                <h3 style="text-align: center;">OR</h3>            
-                <button onclick="window.location='/signup-web';">Sign up</button>
+                <h3 style="text-align: center;color: #6db5ca;">OR</h3>            
+                <a class="signup-button" onclick="window.location='/signup-web';">Sign up</a>
+                <br>
                 <br>
             </div>
         </form>    
     </div>    
-    <div class="footer">
-        <br>
-        <h3>CaroH - Online caro game</h3>
-        <p>Developer by HungNguyen81</p>
-        <br>
-    </div>
+    <%- include('footer') -%>    
 </body>
 </html>

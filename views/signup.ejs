@@ -2,13 +2,16 @@
 <head>
     <title>CaroH - Online caro game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    
+    <script src="https://kit.fontawesome.com/eb9cf78489.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <%- include('style') -%>
     
 </head>
 <body>
+    <img src="avatar/50.png" alt="CAROH" class="game_img" width="200">
     <form action="signup-web" method="post">
-        <h1>GAME SIGN UP</h1>
+        <h1 class="game">CAROH</h1>
+        <h1>SIGN UP</h1>
         <div class="container">
             <label for="username"><b>Username</b></label>
             <input type="text" placeholder="Enter Username" name="username" required>
@@ -17,10 +20,42 @@
             <label for="cpassword"><b>Confirm Password</b></label>
             <input type="password" placeholder="Confirm Password" name="cpassword" required>
             <label for="email"><b>Email</b></label>
-            <input type="text" placeholder="Enter Email" name="email">      
-            <input type="text" placeholder="Number of avt (1-50)" name="avt" required>
+            <input type="text" placeholder="Enter Email" name="email">  
+            <label for="avatar_chooser"><b>Choose Your Avatar</b></label>                
+            <div class="avatar_chooser" style="background:;">
+                <a class="prev"><i class="fas fa-caret-left" onclick="prev_img()"></i></a>
+                <img class="game_avt" id="avt" alt="avt">
+                <a class="next"><i class="fas fa-caret-right" onclick="next_img()"></i></a>
+            </div>
+            <input type="text" name="avt" id="avt-input" style="visibility: hidden;">            
             <button type="submit">Sign up</button>
+            <br>
+            <br>
         </div>
     </form>    
+    <%-include('footer')-%>
+    <script>
+        var avtid;
+        window.onload = ()=>{
+            avtid = (Math.floor(Math.random() * 10)+1)*5;
+            $("#avt").attr("src", "avatar/" + ((avtid < 10)? "0" + avtid:avtid) + ".png");
+            console.log(avtid);
+            $("#avt-input").attr("value", avtid);
+        }
+        function prev_img(){
+            avtid = avtid - 1;
+            if(avtid == 0) avtid = 50;
+            $("#avt").attr("src", "avatar/" + ((avtid < 10)? "0" + avtid:avtid) + ".png");
+            console.log(avtid);
+            $("#avt-input").attr("value", avtid);
+        }
+        function next_img(){
+            avtid = avtid + 1;
+            if(avtid == 51) avtid = 1;
+            $("#avt").attr("src", "avatar/" + ((avtid < 10)? "0" + avtid:avtid) + ".png");
+            console.log(avtid);
+            $("#avt-input").attr("value", avtid);
+        }
+    </script>
 </body>
 </html>
