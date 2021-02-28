@@ -2,24 +2,30 @@
     <head>
         <%-include('head')-%>
         <%-include('home-style')-%>
+        <%var username, avatarid;%>
+        <script src="https://cdn.socket.io/3.1.1/socket.io.min.js" integrity="sha384-gDaozqUvc4HTgo8iZjwth73C6dDDeOJsAgpxBcMpZYztUfjHXpzrpdrHRdVp8ySO" crossorigin="anonymous"></script>
+        <script>
+            const socket = io("https://caroh-game.herokuapp.com/");
+        </script>
     </head>
     <body>
         <div class="fcontainer" style="height: 100vh;">
             <div>
                 <div class="fcontainer">                    
                     <div>
-                        <img src="avatar/00.png" alt="avt1" id="avt1">
+                        <img src="avatar/<%=((avatarid < 10)? '0' + avatarid: avatarid)%>.png" alt="avt1" id="avt1" username='<%= username%>' avtid='<%=avatarid%>'>
                         <h5 style="display: inline-block;
                                    transform: translateY(-40px); 
                                    color:rgb(236, 69, 69); 
-                                   font-size: 16;">YOU</h5>
+                                   font-size: 16;"><%= username%> <b style="color: rgb(12, 10, 110);">(YOU)</b></h5>
+                        
                     </div>
                     <div>
-                        <img src="avatar/00.png" alt="avt1" id="avt1">
+                        <img src="avatar/00.png" alt="avt1" id="avt2">
                         <h5 style="display: inline-block;
                                    transform: translateY(-40px); 
                                    color: blue; 
-                                   font-size: 16">NGƯỜI CHƠI 2</h5>
+                                   font-size: 16" id="p2_username">NGƯỜI CHƠI 2</h5>
                     </div>
                 </div>
                 <div class="fcontainer freverse room-div">
@@ -48,15 +54,56 @@
             </div>            
         </div>
         <%-include('footer')-%>
-        <script>
-            var roomid;
+        <script>            
+            var roomid, username, avtid;
             function createNewRoom(){
+                console.log('ok create room')
                 roomid = '';
                 for(let i = 0; i < 6; i++){
                     roomid += Math.floor(Math.random() * 10);                    
-                }
-                console.log(roomid);
-                $("#roomid").text(roomid);
+                }                
+                $("#roomid").text(roomid);                
+                username = $("#avt1").attr('username');
+                avtid = $("#avt1").attr('avtid');
+                socket.emit("createRoom", roomid, username, avtid);
+                socket.on("roomFull", (p2_username, p2_avtid) => {
+                    $("#avt2").attr("src", "avatar/" + ((p2_avtid < 10)? '0' + p2_avtid:p2_avtid) + '.png');
+                    $("#p2_username").text(p2_username);
+                });
+                socket.on("newMsg", (username, replymsg) => {            
+                    let chat = $("#txtChat").text();
+                    $("#txtChat").text(chat + '\n' + username + ': - ' + replymsg);                    
+                });
+                socket.on("memberLeft", arg => {
+                    $("#avt2").attr("src", "avatar/00.png");
+                    $("#p2_username").text('NGƯỜI CHƠI 2');
+                });
+            }
+            function joinARoom(){
+                roomid = $("#roomid-input").val();
+                username = $("#avt1").attr('username');
+                avtid = $("#avt1").attr('avtid');
+                socket.emit("joinRoom", roomid, username, avtid);
+
+                socket.on("roomFull", (p2_username, p2_avtid) => {
+                    $("#avt2").attr("src", "avatar/" + ((p2_avtid < 10)? '0' + p2_avtid:p2_avtid) + '.png');
+                    $("#p2_username").text(p2_username);
+                });
+                socket.on("newMsg", (username, replymsg) => {            
+                    let chat = $("#txtChat").text();
+                    $("#txtChat").text(chat + '\n' + username + ': - ' + replymsg);                    
+                });
+                socket.on("memberLeft", arg => {
+                    $("#avt2").attr("src", "avatar/00.png");
+                    $("#p2_username").text('NGƯỜI CHƠI 2');
+                });
+            }
+            function sendMyMsg(){
+                let msg = $("#message-input").val();
+                let user = $("#avt1").attr("username");
+                let chat = $("#txtChat").text();
+                $("#txtChat").text(chat + '\n' + user + ': - ' + msg);    
+                socket.emit("sendMsg", roomid, username, msg);
             }
         </script>
     </body>
