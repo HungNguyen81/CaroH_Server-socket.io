@@ -7,12 +7,37 @@ body {
     font-family: Arial, Helvetica, sans-serif;    
 }
 form {
-    background-color: white;
     border: 3px solid #f1f1f1;
+    border-radius: 50px;
     width: 40vw;
+    background-color: white;    
+    height: max-content;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 100px;
+    margin-top: 50px;
+}
+.form_login{
+  position: relative;
+  left: 50vw;  
+  height: 60vh; width: 40vw;
+  background-color: transparent;
+  transform: translate(-50%);
+}
+.footer{
+  margin-top: 300px;
+  position: relative; 
+  background-color: #207088; 
+  color: #fdfdfd;
+  text-align: center;
+  margin-bottom: -20px;
+}
+
+.container{
+  padding: 20px;
+}
+
+.game{
+  font-size: 70;
 }
 
 input[type=text], input[type=password] {
@@ -33,14 +58,17 @@ button {
   border: none;
   cursor: pointer;
   width: 100%;
+  border-radius: 20px;
+  font-size: 18;
 }
 
 button:hover {
   opacity: 0.8;
 }
 
-h1{
+h1, h2, label{
     text-align: center;
+    color: #6db5ca;
 }
 
 .container {
@@ -52,6 +80,13 @@ span.psw {
   padding-top: 16px;
 }
 
+.game_img{
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  margin-top: 20px;
+}
+
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 900px) {
   span.psw {
@@ -59,8 +94,9 @@ span.psw {
      float: none;
   }
   form{
-    width: 90vw;
-    font-size: 120%;    
+    width: 75vw;
+    margin-left: -50%;
+    font-size: 110%;
   }
   input, button{
     font-size: 150%;
