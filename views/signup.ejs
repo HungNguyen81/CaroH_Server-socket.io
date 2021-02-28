@@ -5,7 +5,25 @@
     <script src="https://kit.fontawesome.com/eb9cf78489.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <%- include('style') -%>
-    
+    <style>
+        @media screen and (max-width: 900px) {
+            span.psw {
+                display: block;
+                float: none;
+            }
+            form{
+                width: 76vw;
+                /* margin-left: -8vw; */
+                font-size: 110%;
+            }
+            input, button, .signup-button{
+                font-size: 150%;
+            }
+            .signup-button{
+                width: 90%;
+        }  
+    }
+    </style>
 </head>
 <body>
     <img src="avatar/50.png" alt="CAROH" class="game_img" width="200">
