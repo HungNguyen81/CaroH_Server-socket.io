@@ -1,15 +1,63 @@
 <html>
     <head>
-        <%- include('head') -%>
-        <% var username;%>
-        <% var avatarid;%>
-        <% var src = '<img width="50px" src ="avatar/' + ((avatarid < 10)? '0' + avatarid:avatarid) + '.png" alt="avt">' %> 
+        <%-include('head')-%>
+        <%-include('home-style')-%>
     </head>
     <body>
-        <div class="container">
-            <h1>hello <%= username%></h1>
-            <h2>avt: <%= avatarid%></h2>            
-            <%-src%>
+        <div class="fcontainer" style="height: 100vh;">
+            <div>
+                <div class="fcontainer">                    
+                    <div>
+                        <img src="avatar/00.png" alt="avt1" id="avt1">
+                        <h5 style="display: inline-block;
+                                   transform: translateY(-40px); 
+                                   color:rgb(236, 69, 69); 
+                                   font-size: 16;">YOU</h5>
+                    </div>
+                    <div>
+                        <img src="avatar/00.png" alt="avt1" id="avt1">
+                        <h5 style="display: inline-block;
+                                   transform: translateY(-40px); 
+                                   color: blue; 
+                                   font-size: 16">NGƯỜI CHƠI 2</h5>
+                    </div>
+                </div>
+                <div class="fcontainer freverse room-div">
+                    <div>
+                        <input type="text" id="roomid-input" placeholder="Room ID">
+                    </div>
+                    <div class="fcontainer btn-div">
+                        <div><a id="createBtn" class="btn" onclick="createNewRoom()">Create Room</a></div>
+                        <div><a id="joinBtn" class="btn" onclick="joinARoom()">Join Room</a></div>
+                    </div> 
+                    <div class="roomtext-div">
+                        <p>Room ID: <span id="roomid" style="font-size: 50 ;color: blue;"></span></p>
+                    </div>                   
+                </div>
+            </div>
+            <div class="msg-box">
+                <div class="fcontainer freverse">
+                    <div>
+                        <textarea id="txtChat" cols="60" rows="20" placeholder="chat" readonly></textarea>
+                    </div>
+                    <div class="msg-input">
+                        <input type="text" id="message-input" placeholder="Enter your message">
+                        <a id="btnSend" onclick="sendMyMsg()">SEND</a>
+                    </div>
+                </div>
+            </div>            
         </div>
+        <%-include('footer')-%>
+        <script>
+            var roomid;
+            function createNewRoom(){
+                roomid = '';
+                for(let i = 0; i < 6; i++){
+                    roomid += Math.floor(Math.random() * 10);                    
+                }
+                console.log(roomid);
+                $("#roomid").text(roomid);
+            }
+        </script>
     </body>
 </html>

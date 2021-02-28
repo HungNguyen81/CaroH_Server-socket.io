@@ -6,6 +6,7 @@ const bodyParser= require('body-parser');
 const AccModel  = require('./models/accModel');
 const RoomModel = require('./models/roomsModel');
 var MongoClient = require('mongodb').MongoClient;
+const { render } = require('ejs');
 
 var url = "mongodb+srv://admin-caroh:hungnguyen81@gamedb.r21s8.mongodb.net/";//"mongodb://localhost:27017/";
 var rid = '';
@@ -222,6 +223,10 @@ io.on('connection', (socket)=>{
 app.get('/', (req, res)=>{
     res.render('login');
 });
+
+app.get('/home', (req, res)=>{
+    res.render('home-page');
+})
 
 app.post('/home', (req, res) => {
     let user = req.body.username;

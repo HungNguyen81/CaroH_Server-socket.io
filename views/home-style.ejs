@@ -1,0 +1,120 @@
+<style>
+    body{
+    background-color: #6db5ca;
+}
+.fcontainer{
+    display: flex;
+    /* background-color: #6db5ca; */
+}
+.fcontainer > div {
+    /* background-color: #f1f1f1; */
+    margin: 10px;
+    padding: 20px;
+    font-size: 30px;
+    width: 50%;
+}
+.freverse{
+    flex-direction: column;
+}
+.freverse > div{
+    width: 85%;
+}
+#avt1, #avt2{
+    width: 100px;
+}
+.msg-box{
+    background-color: burlywood;
+}
+.room-div > div{
+    /* background-color: darkcyan; */
+    height: 50px;
+    padding: 15px;    
+    position: relative;
+    left: 50%;
+    margin-top: 0;
+    transform: translate(-50%);
+}
+#roomid-input{
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    height: 50px;
+    padding: 15px;
+    text-align: center;
+    border-radius: 25px;
+    width: 75%;
+}
+.btn-div > div{
+    margin: 3px;
+    padding: 3px;
+    text-align: center;
+}
+.btn{
+    position: relative;
+    font-size: 17px;
+    background-color: coral;
+    color: #ffffff;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 25px;
+}
+.btn:hover{
+    opacity: 0.8;    
+}
+
+#txtChat{
+    padding: 15px;
+    border-radius: 20px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+}
+#message-input{
+    width: 100%;
+    height: 50px;   
+    margin: 5px;
+    padding: 5px; 
+    border: 1px solid darkcyan;
+    border-radius: 30px;
+    padding: 15px;
+}
+#btnSend{
+    background-color: darkcyan;
+    color: white;
+    font-size: 18;
+    padding: 15px;    
+    margin: 10px;
+    border-radius: 25px;
+    position: relative;
+    top: 30px;    
+}
+.roomtext-div{
+    text-align: center;
+    color: darkred;
+}
+.footer{
+    margin-top: 300px;
+    position: relative; 
+    background-color: #207088; 
+    color: #fdfdfd;
+    text-align: center;
+    margin-bottom: -20px;
+  }
+@media screen and (max-width: 900px){
+    .fcontainer{        
+        flex-direction: column;
+    }
+    .fcontainer > div{
+        width: 85vw;
+    }
+    .btn-div > div{        
+        margin: 20px;
+    }
+    #txtChat{        
+        width: 90%;
+    }
+    .footer{
+        margin-top: 1000px;
+    }
+}
+</style>
