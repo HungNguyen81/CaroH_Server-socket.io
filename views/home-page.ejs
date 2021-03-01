@@ -68,6 +68,7 @@
                 socket.off("roomFull");
                 socket.off("newMsg");
                 socket.off("memberLeft");
+                socket.emit('disconnect');
                 
                 socket.emit("createRoom", roomid, username, avtid);
                 socket.on("roomFull", (p2_username, p2_avtid) => {
@@ -90,6 +91,7 @@
                 socket.off("roomFull");
                 socket.off("newMsg");
                 socket.off("memberLeft");
+                socket.emit('disconnect');
                 socket.emit("joinRoom", roomid, username, avtid);                
 
                 socket.on("roomFull", (p2_username, p2_avtid) => {
