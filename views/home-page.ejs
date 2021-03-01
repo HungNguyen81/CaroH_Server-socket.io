@@ -87,7 +87,7 @@
                     $("#p2_username").text(p2_username);
                 });
                 socket.on("newMsg", (username, replymsg) => {
-                    addToTextarea($("#txtChat", username, replymsg));
+                    addToTextarea($("#txtChat"), username, replymsg);
                 });
                 socket.on("memberLeft", arg => {
                     $("#avt2").attr("src", "avatar/00.png");
@@ -112,7 +112,7 @@
                     $("#p2_username").text(p2_username);
                 });
                 socket.on("newMsg", (username, replymsg) => {
-                    addToTextarea($("#txtChat", username, replymsg));           
+                    addToTextarea($("#txtChat"), username, replymsg);           
                 });
                 socket.on("memberLeft", arg => {
                     $("#avt2").attr("src", "avatar/00.png");
@@ -128,8 +128,8 @@
                 $("#message-input").val("");
             }
             function addToTextarea($ta, user, msg) {
-                let chat = $ta.val();
-                $ta.val(chat + '\n' + user + ': - ' + msg);
+                let chat = $ta.text();
+                $ta.text(chat + '\n' + user + ': - ' + msg);
                 $ta.scrollTop($ta[0].scrollHeight);
             }   
         </script>
