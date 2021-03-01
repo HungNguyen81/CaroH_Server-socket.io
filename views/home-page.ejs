@@ -30,11 +30,21 @@
                 </div>
                 <div class="fcontainer freverse room-div">
                     <div>
-                        <input type="text" id="roomid-input" placeholder="Room ID">
+                        <input type="text" id="roomid-input" placeholder="Nhập mã phòng">
                     </div>
                     <div class="fcontainer btn-div">
-                        <div><a id="createBtn" class="btn" onclick="createNewRoom()">Create Room</a></div>
-                        <div><a id="joinBtn" class="btn" onclick="joinARoom()">Join Room</a></div>
+                        <div><a id="createBtn" class="btn" onclick="createNewRoom()">Tạo Phòng</a></div>
+                        <div><a id="joinBtn" class="btn" onclick="joinARoom()">Vào Phòng</a><br><br></div>
+                        <div>
+                            <h3>Hướng dẫn sử dụng:</h3>
+                            <ol>
+                                <li> Người chơi 1 click vào nút "Tạo Phòng" và nhận được mã phòng là 6 kí tự màu xanh dương "Room ID: ..."</li>
+                                <li> Người chơi 2 bằng cách nào đó có được mã phòng do người chơi 1 tạo</li>
+                                <li> Người chơi 2 nhập mã phòng vào ô "Nhập mã phòng"</li>
+                                <li> Người chơi 2 click vào nút "Vào Phòng"</li>
+                                <li> Khi người chơi thấy avatar và username của người kia xuất hiện, 2 người đã được kết nối và có thể trò chuyện.</li>
+                            </ol>
+                        </div>
                     </div> 
                     <div class="roomtext-div">
                         <p>Room ID: <span id="roomid" style="font-size: 50 ;color: blue;"></span></p>
@@ -96,6 +106,7 @@
                 socket.off("memberLeft");
                 
                 socket.emit("joinRoom", roomid, username, avtid);                
+                $("#roomid").text(roomid);
 
                 socket.on("roomFull", (p2_username, p2_avtid) => {
                     $("#avt2").attr("src", "avatar/" + ((p2_avtid < 10)? '0' + p2_avtid:p2_avtid) + '.png');
@@ -115,6 +126,7 @@
                 let user = $("#avt1").attr("username");
                 addToTextarea($("#txtChat"), msg);
                 socket.emit("sendMsg", roomid, username, msg);
+                $("#message-input").val("");
             }
             function addToTextarea($ta, msg) {
                 let chat = $ta.val();
