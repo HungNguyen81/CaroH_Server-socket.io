@@ -65,8 +65,6 @@
                 $("#roomid").text(roomid);                
                 username = $("#avt1").attr('username');
                 avtid = $("#avt1").attr('avtid');
-                socket.disconnect();
-                socket.connect();
                 
                 socket.emit("createRoom", roomid, username, avtid);
                 socket.on("roomFull", (p2_username, p2_avtid) => {
