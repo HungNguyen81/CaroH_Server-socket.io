@@ -65,6 +65,8 @@
                 $("#roomid").text(roomid);                
                 username = $("#avt1").attr('username');
                 avtid = $("#avt1").attr('avtid');
+                socket.disconnect();
+                
                 socket.emit("createRoom", roomid, username, avtid);
                 socket.on("roomFull", (p2_username, p2_avtid) => {
                     $("#avt2").attr("src", "avatar/" + ((p2_avtid < 10)? '0' + p2_avtid:p2_avtid) + '.png');
