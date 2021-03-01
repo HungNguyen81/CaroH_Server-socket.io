@@ -86,9 +86,8 @@
                     $("#avt2").attr("src", "avatar/" + ((p2_avtid < 10)? '0' + p2_avtid:p2_avtid) + '.png');
                     $("#p2_username").text(p2_username);
                 });
-                socket.on("newMsg", (username, replymsg) => {            
-                    let chat = $("#txtChat").text();
-                    $("#txtChat").text(chat + '\n' + username + ': - ' + replymsg);                    
+                socket.on("newMsg", (username, replymsg) => {
+                    addToTextarea($("#txtChat", username, replymsg));
                 });
                 socket.on("memberLeft", arg => {
                     $("#avt2").attr("src", "avatar/00.png");
@@ -112,9 +111,8 @@
                     $("#avt2").attr("src", "avatar/" + ((p2_avtid < 10)? '0' + p2_avtid:p2_avtid) + '.png');
                     $("#p2_username").text(p2_username);
                 });
-                socket.on("newMsg", (username, replymsg) => {            
-                    let chat = $("#txtChat").text();
-                    $("#txtChat").text(chat + '\n' + username + ': - ' + replymsg);                    
+                socket.on("newMsg", (username, replymsg) => {
+                    addToTextarea($("#txtChat", username, replymsg));           
                 });
                 socket.on("memberLeft", arg => {
                     $("#avt2").attr("src", "avatar/00.png");
