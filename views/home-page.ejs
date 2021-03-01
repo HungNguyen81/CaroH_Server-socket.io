@@ -113,10 +113,14 @@
             function sendMyMsg(){
                 let msg = $("#message-input").val();
                 let user = $("#avt1").attr("username");
-                let chat = $("#txtChat").text();
-                $("#txtChat").text(chat + '\n' + user + ': - ' + msg);    
+                addToTextarea($("#txtChat"), msg);
                 socket.emit("sendMsg", roomid, username, msg);
             }
+            function addToTextarea($ta, msg) {
+                let chat = $ta.val();
+                $ta.val(chat + '\n' + user + ': - ' + msg);
+                $ta.scrollTop($ta[0].scrollHeight);
+            }   
         </script>
     </body>
 </html>
