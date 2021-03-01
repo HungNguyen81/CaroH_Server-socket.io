@@ -165,6 +165,40 @@ io.on('connection', (socket)=>{
           });
     })
 
+    socket.on('leaveRoom', (roomid, username) => {
+        console.log(username + " left room " + roomid)
+        MongoClient.connect(url, (err, db) => {
+            if (err) throw err;
+
+            let dbo = db.db("gamedb")
+            let myquery = { roomid: roomid };
+            dbo.collection('rooms_onlines').findOne(myquery).then(res => {                                
+                if(res){
+                    if(res.numberofplayers === 1){
+                        dbo.collection('rooms_onlines').deleteOne(myquery).catch(e=>{})
+                    } else {
+                        dbo.collection("rooms_onlines").updateOne(myquery, {
+                            $set: {numberofplayers: 1}
+                        });
+                        if(socket.id === res.fstplayer.socketid){
+                            dbo.collection("rooms_onlines").updateOne(myquery,{
+                                $set: {fstplayer: undefined}
+                            })
+                            io.to(res.scdplayer.socketid).emit("memberLeft")
+                        } else if(socket.id === res.scdplayer.socketid){
+                            dbo.collection("rooms_onlines").updateOne(myquery,{
+                                $set: {scdplayer: undefined}
+                            })
+                            io.to(res.fstplayer.socketid).emit("memberLeft")
+                        }
+                    }
+                } else {
+                    console.log('room invalid')
+                }
+            }).catch(e => {})
+        });
+    })
+
     // on disconnect socket
     socket.on('disconnect', () => {
         console.log('Disconnect socket! ' + rid)
